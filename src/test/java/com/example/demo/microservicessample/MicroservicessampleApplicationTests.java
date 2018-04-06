@@ -19,14 +19,14 @@ public class MicroservicessampleApplicationTests {
 
 	@Autowired
 	MicroServicesService microServiceService;
-	
+
 	@Autowired
 	private FibonacciNumberController fibonacciNumberController;
 	@Autowired
 	private ReverseWordsController reverseWordsController;
 	@Autowired
 	private TriangleTypeController triangleTypeController;
-	
+
 	@Test
 	public void contextLoads() {
 		assertNotNull(fibonacciNumberController);
@@ -34,12 +34,9 @@ public class MicroservicessampleApplicationTests {
 		assertNotNull(triangleTypeController);
 		assertNotNull(microServiceService);
 	}
-	
+
 	@Test
-    public void test()
-    {
-		MicroservicessampleApplication.main(new String[]{
-                "--spring.main.web-environment=false",
-        });
-    }
+	public void test() {
+		MicroservicessampleApplication.main(new String[] { "--spring.main.web-environment=false", });
+	}
 }
