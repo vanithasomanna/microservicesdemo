@@ -33,7 +33,7 @@ public class ReverseWordsControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Mock
+	@Autowired
 	private ReverseWordsController reverseWordsController;
 
 	@InjectMocks
@@ -51,9 +51,6 @@ public class ReverseWordsControllerTest {
 
 	@Test
 	public void testReverseWordsControllerPositive() throws Exception {
-		given(this.reverseWordsController.reverseWords("how are you"))
-				.willReturn((ResponseEntity<String>) ResponseEntity.status(HttpStatus.OK)
-						.cacheControl(CacheControl.noCache()).header("Pragma", "no-cache").body("woh era uoy"));
 		mockMvc.perform(get("/api/ReverseWords").param("sentence", "how are you")).andExpect(status().isOk());
 	}
 
@@ -62,9 +59,4 @@ public class ReverseWordsControllerTest {
 		assertEquals("lla ", microServicesService.reverseWords("all"));
 	}
 
-	@Test
-	public void testReverseWordsController() throws Exception {
-		when(reverseWordsController.reverseWords("All")).thenReturn(ResponseEntity.status(HttpStatus.OK)
-				.cacheControl(CacheControl.noCache()).header("Pragma", "no-cache").body("llA "));
-	}
 }
