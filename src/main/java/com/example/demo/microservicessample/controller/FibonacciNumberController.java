@@ -17,10 +17,10 @@ import com.example.demo.microservicessample.service.MicroServicesService;
 @RestController
 @RequestMapping("/api")
 public class FibonacciNumberController {
-	
+
 	@Autowired
 	private MicroServicesService microServicesService;
-	
+
 	/**
 	 * Return response entity with nth Fibonacci number
 	 * 
@@ -28,17 +28,15 @@ public class FibonacciNumberController {
 	 * @return Response Entity
 	 */
 	@RequestMapping(value = "/Fibonacci", method = RequestMethod.GET)
-	public ResponseEntity<Object> getNthFibonacciNumber(@RequestParam("n")  Object nthFibonacciNum) {
+	public ResponseEntity<Object> getNthFibonacciNumber(@RequestParam("n") Object nthFibonacciNum) {
 		try {
 			Long nthFibNum = new Long(nthFibonacciNum.toString());
-			 return ResponseEntity.status(HttpStatus.OK)
-		                .cacheControl(CacheControl.noCache()).header("Pragma", "no-cache")
-		                .body(microServicesService.getNthFibonacciNumber(nthFibNum));
-		}catch(NumberFormatException numberFormatExcpetion){
-			Map<String,String> response = new HashMap<String, String>();
+			return ResponseEntity.status(HttpStatus.OK).cacheControl(CacheControl.noCache())
+					.header("Pragma", "no-cache").body(microServicesService.getNthFibonacciNumber(nthFibNum));
+		} catch (NumberFormatException numberFormatExcpetion) {
+			Map<String, String> response = new HashMap<String, String>();
 			response.put("error", "Invalid parameter value");
 			return ResponseEntity.badRequest().body(response);
 		}
 	}
 }
-
