@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.example.demo.microservicessample.controller.FibonacciNumberController;
+import com.example.demo.microservicessample.controller.MergeArrayController;
 import com.example.demo.microservicessample.controller.ReverseWordsController;
 import com.example.demo.microservicessample.controller.TriangleTypeController;
 import com.example.demo.microservicessample.service.MicroServicesService;
@@ -26,6 +27,9 @@ public class MicroservicessampleApplicationTests {
 	private ReverseWordsController reverseWordsController;
 	@Autowired
 	private TriangleTypeController triangleTypeController;
+	
+	@Autowired
+	private MergeArrayController mergeArrayController;
 
 	@Test
 	public void contextLoads() {
@@ -33,6 +37,7 @@ public class MicroservicessampleApplicationTests {
 		assertNotNull(reverseWordsController);
 		assertNotNull(triangleTypeController);
 		assertNotNull(microServiceService);
+		assertNotNull(mergeArrayController);
 	}
 
 	@Test
