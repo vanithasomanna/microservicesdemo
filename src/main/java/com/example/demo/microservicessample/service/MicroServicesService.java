@@ -1,6 +1,12 @@
 package com.example.demo.microservicessample.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import com.example.demo.microservicessample.model.IntArrayList;
 
 @Service
 public class MicroServicesService {
@@ -71,6 +77,37 @@ public class MicroServicesService {
 			return "Isosceles";
 		}
 		return "Scalene";
+	}
+
+	/**
+	 * To return merged and sorted array of integers
+	 * 
+	 * @param intArrayList
+	 * @return Array of sorted integer
+	 */
+	public IntArrayList mergeToAnArray(IntArrayList intArrayList) {
+		// to hold merged array list
+		List<Integer> mergedList = new ArrayList<>();
+		mergedList.addAll(intArrayList.getArray1());
+		mergedList.addAll(intArrayList.getArray2());
+		mergedList.addAll(intArrayList.getArray3());
+		mergedList.addAll(intArrayList.getArray4());
+		mergedList.addAll(intArrayList.getArray5());
+		mergedList.addAll(intArrayList.getArray6());
+		mergedList.addAll(intArrayList.getArray7());
+		mergedList.addAll(intArrayList.getArray8());
+		mergedList.addAll(intArrayList.getArray9());
+		mergedList.addAll(intArrayList.getArray10());
+		// sort the array
+		Arrays.sort(mergedList.toArray());
+		// to remove duplicate list
+		List<Integer> mergedSortedList = new ArrayList<>();
+		for (Integer num : mergedList) {
+			if (!mergedSortedList.contains(num))
+				mergedSortedList.add(num);
+		}
+		intArrayList.setArrays(mergedSortedList);
+		return intArrayList;
 	}
 
 }
