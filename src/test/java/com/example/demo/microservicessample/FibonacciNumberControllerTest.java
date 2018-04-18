@@ -2,7 +2,6 @@ package com.example.demo.microservicessample;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,28 +55,32 @@ public class FibonacciNumberControllerTest {
 		assertNotEquals(122, microServicesService.getNthFibonacciNumber(10));
 	}
 
-
 	@Test
 	public void testFibonacciSuccess() throws Exception {
-		mockMvc.perform(get("/api/Fibonacci?n="+ n))
-                .andExpect(status().isOk());
+		mockMvc.perform(get("/api/Fibonacci?n=" + n)).andExpect(status().isOk());
 	}
-	
-	@Test
-    public void testFibController() throws Exception {
-        this.mockMvc.perform(get("/api/Fibonacci").param("n", n).accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
-                .andExpect(status().isOk());
-
-    }
 
 	@Test
-    public void testFibonacciApiInvalid() throws Exception {
-       try{
-    	   fibonacciNumberController.getNthFibonacciNumber(new String("abc"));
-       }catch(NumberFormatException e){
-    	   
-       }
-		
+	public void testFibonacciNumberLessThanZero() throws Exception {
+		mockMvc.perform(get("/api/Fibonacci?n=" + -1)).andExpect(status().isBadRequest());
 	}
-	
+
+	@Test
+	public void testFibController() throws Exception {
+		this.mockMvc.perform(
+				get("/api/Fibonacci").param("n", n).accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+				.andExpect(status().isOk());
+
+	}
+
+	@Test
+	public void testFibonacciApiInvalid() throws Exception {
+		try {
+			fibonacciNumberController.getNthFibonacciNumber(new String("abc"));
+		} catch (NumberFormatException e) {
+
+		}
+
+	}
+
 }
