@@ -1,110 +1,44 @@
 package com.example.demo.microservicessample;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpStatus;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import com.example.demo.microservicessample.controller.MergeArrayController;
-import com.example.demo.microservicessample.model.IntArrayList;
+import com.example.demo.microservicessample.model.RestRequestModel;
+import com.example.demo.microservicessample.model.RestResponseModel;
 import com.example.demo.microservicessample.service.MicroServicesService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 @AutoConfigureMockMvc
 public class MergeArrayControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Autowired
-	private MergeArrayController mergeArrayController;
-	@InjectMocks
+	@MockBean
 	private MicroServicesService microServicesService;
 
-	@Before
-	public void setUp() throws Exception {
-		mockMvc = MockMvcBuilders.standaloneSetup(mergeArrayController).build();
-	}
+	RestResponseModel mockOneArrayResponse = new RestResponseModel(new Object[] { 0, 1, 2, 3, 6, 7, 8, 9, 23, 45, 90 });
+	String mockOneArrayRequest = "{\"Array1\":[1,2,3,45],\"Array2\":[7,9,0,6,8,23],\"Array3\":[90,23,1,2,3]}";
 
 	@Test
-	public void testMergeToArrayPositive() throws Exception {
-		IntArrayList intArrayList = new IntArrayList();
-		List<Integer> array1 = new ArrayList<>();
-		array1.add(1);
-		array1.add(2);
-		array1.add(3);
-		List<Integer> array2 = new ArrayList<>();
-		array2.add(3);
-		array2.add(4);
-		array2.add(5);
-		intArrayList.setArray1(array1);
-		intArrayList.setArray2(array2);
-
-		List<Integer> arrays = new ArrayList<>();
-		arrays.add(1);
-		arrays.add(2);
-		arrays.add(3);
-		arrays.add(4);
-		arrays.add(5);
-
-		mockMvc.perform(post("/api/MakeOneArray").requestAttr("Array1", array1).requestAttr("Array2", array2))
-				.andExpect(status().isBadRequest());
-	}
-
-	@Test
-	public void testMergeArrayServicePositive() {
-		IntArrayList intArrayList = new IntArrayList();
-		List<Integer> array1 = new ArrayList<>();
-		array1.add(1);
-		array1.add(2);
-		array1.add(3);
-		List<Integer> array2 = new ArrayList<>();
-		array2.add(3);
-		array2.add(4);
-		array2.add(5);
-		intArrayList.setArray1(array1);
-		intArrayList.setArray2(array2);
-		intArrayList.setArray3(array1);
-		intArrayList.setArray4(array2);
-		intArrayList.setArray5(array1);
-		intArrayList.setArray6(array1);
-		intArrayList.setArray7(array1);
-		intArrayList.setArray8(array1);
-		intArrayList.setArray9(array1);
-		intArrayList.setArray10(array1);
-
-		List<Integer> arrays = new ArrayList<>();
-		arrays.add(1);
-		arrays.add(2);
-		arrays.add(3);
-		arrays.add(4);
-		arrays.add(5);
-
-		intArrayList.setArrays(arrays);
-
-		IntArrayList mergedArray = microServicesService.mergeToAnArray(intArrayList);
-		assertEquals(intArrayList.getArrays(), mergedArray.getArrays());
+	public void testMergeArrayServicePositive() throws Exception {
+		Mockito.when(microServicesService.mergeToAnArray(Mockito.any(RestRequestModel.class)))
+				.thenReturn(mockOneArrayResponse);
+		mockMvc.perform(MockMvcRequestBuilders.post("/api/MakeOneArray").accept(MediaType.APPLICATION_JSON)
+				.content(mockOneArrayRequest).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().string("{\"Array\":[0,1,2,3,6,7,8,9,23,45,90]}"));
 	}
 
 }
