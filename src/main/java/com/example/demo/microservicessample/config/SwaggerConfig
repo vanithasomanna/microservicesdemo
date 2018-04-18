@@ -1,0 +1,38 @@
+package com.example.demo.microservicessample.config;
+
+import static springfox.documentation.builders.PathSelectors.regex;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@Configuration
+@EnableSwagger2
+public class SwaggerConfig {
+
+	// Logger to log details
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	@Bean
+	public Docket microserviceAssignementApi() {
+		logger.debug("microserviceAssignementApi : Configuring Swagger");
+		return new Docket(DocumentationType.SWAGGER_2).select()
+				.apis(RequestHandlerSelectors.basePackage("com.example.demo.microservicessample.controller"))
+				.paths(regex("/api.*")).build().apiInfo(metaData());
+	}
+
+	private ApiInfo metaData() {
+		logger.debug("metaData: Configure metadata");
+		return new ApiInfo("Spring Boot REST API",
+				"APIs for Fibonacci number, Triangle type, Reverse words, and Merging array", "1.0", "Terms of service",
+				new Contact("Vanitha S", "", ""), "Apache License Version 2.0",
+				"https://www.apache.org/licenses/LICENSE-2.0");
+	}
+}
