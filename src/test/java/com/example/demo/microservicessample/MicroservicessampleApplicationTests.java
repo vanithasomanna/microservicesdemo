@@ -42,6 +42,6 @@ public class MicroservicessampleApplicationTests {
 
 	@Test
 	public void test() {
-		MicroservicessampleApplication.main(new String[] { "--spring.main.web-environment=false", });
+		MicroservicessampleApplication.main(new String[] {});
 	}
 }
